@@ -16,13 +16,13 @@ class TestOpenFactory extends DefaultSqliteOpenFactory {
       this.sqlitePath = defaultSqlitePath});
 
   @override
-  CommonDatabase open(SqliteOpenOptions options) {
+  Future<CommonDatabase> open(SqliteOpenOptions options) async {
     // For details, see:
     // https://pub.dev/packages/sqlite3#manually-providing-sqlite3-libraries
     sqlite_open.open.overrideFor(sqlite_open.OperatingSystem.linux, () {
       return DynamicLibrary.open(sqlitePath);
     });
-    final db = super.open(options);
+    final db = await super.open(options);
 
     return db;
   }

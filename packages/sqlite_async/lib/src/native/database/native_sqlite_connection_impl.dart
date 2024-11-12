@@ -254,7 +254,7 @@ class _TransactionContext implements SqliteWriteContext {
   }
 }
 
-void _sqliteConnectionIsolate(_SqliteConnectionParams params) async {
+Future<void> _sqliteConnectionIsolate(_SqliteConnectionParams params) async {
   final client = params.port.open();
 
   if (!params.primary) {
@@ -264,7 +264,7 @@ void _sqliteConnectionIsolate(_SqliteConnectionParams params) async {
     await client.post(const InitDb());
   }
 
-  final db = params.openFactory.open(SqliteOpenOptions(
+  final db = await params.openFactory.open(SqliteOpenOptions(
       primaryConnection: params.primary, readOnly: params.readOnly));
 
   runZonedGuarded(() async {

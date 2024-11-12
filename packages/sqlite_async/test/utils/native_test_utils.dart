@@ -21,11 +21,11 @@ class TestSqliteOpenFactory extends TestDefaultSqliteOpenFactory {
       initStatements});
 
   @override
-  CommonDatabase open(SqliteOpenOptions options) {
+  Future<CommonDatabase> open(SqliteOpenOptions options) async {
     sqlite_open.open.overrideFor(sqlite_open.OperatingSystem.linux, () {
       return DynamicLibrary.open(sqlitePath);
     });
-    final db = super.open(options);
+    final db = await super.open(options);
 
     db.createFunction(
       functionName: 'test_sleep',
